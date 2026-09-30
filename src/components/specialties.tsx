@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { doctors, specialties, specialtyDescriptions } from "@/lib/data";
+
 import type { Specialty } from "@/lib/types";
 import { useClinic } from "./provider";
 import { Arrow, Avatar, PageHeading } from "./ui";
@@ -10,8 +10,10 @@ export function SpecialtySelector({
 }: {
   expanded?: boolean;
 }) {
-  const { t, locale } = useClinic();
-  const [selected, setSelected] = useState<Specialty>("family");
+  const { t, locale, doctors, specialties, specialtyDescriptions } = useClinic();
+  const [choice, setSelected] = useState<Specialty>("");
+  const selected = choice || Object.keys(specialties)[0];
+  if (!selected) return <p>{t("لا توجد تخصصات متاحة", "No specialties available", "אין התמחויות זמינות")}</p>;
   const entries = (Object.keys(specialties) as Specialty[]).slice(
     0,
     expanded ? 10 : 6,

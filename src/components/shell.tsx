@@ -14,22 +14,26 @@ import { useState } from "react";
 import { Brand } from "./ui";
 import { useClinic } from "./provider";
 import type { Locale } from "@/lib/types";
+import { authDestination } from "@/lib/auth-navigation";
 export function Shell({ children }: { children: React.ReactNode }) {
-  const { t, locale, setLocale } = useClinic();
+  const { t, locale, setLocale, user, authLoading } = useClinic();
   const path = usePathname();
   const [menuFor, setMenuFor] = useState<string | null>(null);
   const open = menuFor === path;
   const nav = [
     {
+      href: "/sal",
+      label: t("ابدأ مع SAL", "Start with SAL", "מתחילים עם SAL"),
+    },
+    {
       href: "/doctors",
       label: t("ابحث عن طبيب", "Find a doctor", "מציאת רופא"),
     },
-    { href: "/specialties", label: t("التخصصات", "Specialties", "התמחויות") },
     {
       href: "/online",
-      label: t("استشارة أونلاين", "Online consultation", "ייעוץ מקוון"),
+      label: t("الخدمات", "Services", "שירותים"),
     },
-    { href: "/sal", label: t("اسأل SAL", "Ask SAL", "שאלו את SAL") },
+    { href: "/dashboard", label: t("مواعيدي", "Appointments", "התורים שלי") },
   ];
   const mobile = [
     { href: "/", label: t("الرئيسية", "Home", "ראשי"), icon: Home },
@@ -63,7 +67,12 @@ export function Shell({ children }: { children: React.ReactNode }) {
           >
             {nav.map((n) => (
               <Link
-                className={active(n.href) ? "active" : ""}
+                className={[
+                  active(n.href) ? "active" : "",
+                  n.href === "/sal" ? "sal-nav-entry" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 aria-current={active(n.href) ? "page" : undefined}
                 href={n.href}
                 key={n.href}
@@ -85,10 +94,24 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 <option value="he">עברית</option>
               </select>
             </label>
-            <Link className="account-link" href="/dashboard">
-              <UserRound size={20} />
-              {t("مساحتي", "My care", "המרחב שלי")}
-            </Link>
+            {user ? (
+              <Link
+                className="account-link"
+                href={authDestination(null, user.role)}
+              >
+                <UserRound size={20} />
+                {t("مساحتي", "My care", "המרחב שלי")}
+              </Link>
+            ) : (
+              <div className="header-auth" aria-busy={authLoading}>
+                <Link href="/auth">
+                  {t("تسجيل الدخول", "Sign in", "התחברות")}
+                </Link>
+                <Link className="button small" href="/auth?mode=signup">
+                  {t("إنشاء حساب", "Create account", "יצירת חשבון")}
+                </Link>
+              </div>
+            )}
             <button
               className="icon-button menu-toggle"
               aria-label={t("القائمة", "Menu", "תפריט")}
@@ -100,6 +123,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
             </button>
           </div>
         </div>
+        {!user && (
+          <div className="mobile-auth-strip">
+            <Link href="/auth">{t("تسجيل الدخول", "Sign in", "התחברות")}</Link>
+            <Link href="/auth?mode=signup">
+              {t("إنشاء حساب", "Create account", "יצירת חשבון")}
+            </Link>
+          </div>
+        )}
         {open && (
           <nav className="menu-panel" id="mobile-menu">
             {nav.map((n) => (
@@ -129,7 +160,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
               )}
             </p>
             <span className="demo-label">
-              {t("نسخة واجهة تجريبية", "Frontend prototype", "אב טיפוס לממשק")}
+              {t(
+                "منصة التنقل في الرعاية",
+                "Healthcare navigation platform",
+                "פלטפורמת ניווט בריאות",
+              )}
             </span>
           </div>
           <div className="footer-group">
@@ -157,7 +192,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               {t("الخصوصية", "Privacy", "פרטיות")}
             </Link>
             <Link href="/information/terms">
-              {t("شروط التجربة", "Demo terms", "תנאי ההדגמה")}
+              {t("شروط الاستخدام", "Terms of use", "תנאי שימוש")}
             </Link>
           </div>
         </div>
@@ -166,9 +201,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <span>العربية · עברית · English</span>
           <span>
             {t(
-              "لا تُنشأ حجوزات حقيقية في هذه النسخة.",
-              "No real bookings are created in this version.",
-              "לא נוצרים תורים אמיתיים בגרסה זו.",
+              "يُحفظ طلب الموعد بانتظار تأكيد الطبيب. الدفع الإلكتروني غير مفعّل بعد.",
+              "Appointment requests are saved pending clinician confirmation. Online payment is not enabled yet.",
+              "בקשות תור נשמרות בהמתנה לאישור הרופא. תשלום מקוון עוד אינו פעיל.",
             )}
           </span>
         </div>
@@ -181,7 +216,12 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <Link
             key={n.href}
             href={n.href}
-            className={active(n.href) ? "active" : ""}
+            className={[
+              active(n.href) ? "active" : "",
+              n.href === "/sal" ? "sal-nav-entry" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
             aria-current={active(n.href) ? "page" : undefined}
           >
             {n.href === "/sal" ? <Brand sal /> : <n.icon size={22} />}

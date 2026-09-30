@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
-import { doctors, specialties, languageNames, cities } from "@/lib/data";
+import { languageNames } from "@/lib/data";
 import { useClinic } from "./provider";
 import { DoctorCard, PageHeading, DemoNote, Brand, Arrow } from "./ui";
 import Link from "next/link";
@@ -12,7 +12,7 @@ export type DiscoveryFilters = {
   mode?: string;
 };
 export function Discovery({ initial = {} }: { initial?: DiscoveryFilters }) {
-  const { t, locale } = useClinic();
+  const { t, locale, doctors, specialties, cities } = useClinic();
   const [query, setQuery] = useState(initial.q ?? "");
   const [specialty, setSpecialty] = useState(initial.specialty ?? "");
   const [city, setCity] = useState(initial.city ?? "");

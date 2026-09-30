@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Video, CalendarDays, FileText } from "lucide-react";
 import { useClinic } from "./provider";
 import { Arrow, DoctorCard, DemoNote, PageHeading } from "./ui";
-import { doctors } from "@/lib/data";
+
 export function ConsultationFeature() {
   const { t } = useClinic();
   return (
@@ -79,9 +79,9 @@ export function ConsultationFeature() {
         </Link>
         <small>
           {t(
-            "الحجز تجريبي. خدمة الفيديو غير متصلة بعد.",
-            "Demo booking. Live video is not connected yet.",
-            "הזמנה להדגמה. שירות הווידאו עדיין אינו מחובר.",
+            "يُنشئ الحجز موعدًا حقيقيًا بانتظار تأكيد الطبيب. منصة مكالمات الفيديو لم تُفعّل بعد.",
+            "Booking creates a real appointment pending clinician confirmation. The video call platform is not enabled yet.",
+            "ההזמנה יוצרת תור אמיתי הממתין לאישור הרופא. פלטפורמת שיחות הווידאו עוד אינה פעילה.",
           )}
         </small>
       </div>
@@ -89,7 +89,7 @@ export function ConsultationFeature() {
   );
 }
 export function OnlinePage() {
-  const { t } = useClinic();
+  const { t, doctors } = useClinic();
   return (
     <div className="container page">
       <PageHeading
@@ -104,9 +104,9 @@ export function OnlinePage() {
           "בחרו רופא. מצאו את הזמן שלכם.",
         )}
         description={t(
-          "الأطباء الذين يقدمون استشارات فيديو في دليلنا التجريبي. نوع الاستشارة ينتقل معك حتى تأكيد الموعد.",
-          "Doctors offering video consultations in our demo directory. Your consultation type stays with you through booking.",
-          "רופאים שמציעים ייעוץ וידאו במדריך ההדגמה. סוג הייעוץ נשמר לאורך תהליך ההזמנה.",
+          "الأطباء الذين يقدمون استشارات فيديو في دليلنا. نوع الاستشارة ينتقل معك حتى تأكيد الموعد.",
+          "Doctors offering video consultations in our directory. Your consultation type stays with you through booking.",
+          "רופאים שמציעים ייעוץ וידאו במדריך שלנו. סוג הייעוץ נשמר לאורך תהליך ההזמנה.",
         )}
       />
       <div className="online-notice">
@@ -121,9 +121,9 @@ export function OnlinePage() {
           </b>
           <p>
             {t(
-              "اختر الطبيب ← اختر الموعد ← أدخل بيانات تجريبية ← راجع التأكيد. لن يتم إنشاء مكالمة فعلية.",
-              "Choose a doctor → pick a time → enter demo details → review your confirmation. No live call will be created.",
-              "בחרו רופא ← זמן מתאים ← פרטים להדגמה ← אישור. לא תיווצר שיחה אמיתית.",
+              "اختر الطبيب ← اختر الخدمة والموعد ← راجع التأكيد. يُحفظ الطلب بانتظار تأكيد الطبيب.",
+              "Choose a doctor → pick a service and time → review your confirmation. Your request is saved pending clinician confirmation.",
+              "בחרו רופא ← בחרו שירות ומועד ← אישור. הבקשה נשמרת עד לאישור הרופא.",
             )}
           </p>
         </div>

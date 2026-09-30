@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, MapPin, Video, Building2 } from "lucide-react";
-import { cities } from "@/lib/data";
+
 import { useClinic } from "./provider";
 export function CareSearch() {
-  const { t, locale } = useClinic();
+  const { t, locale, cities } = useClinic();
   const router = useRouter();
   const [mode, setMode] = useState("clinic");
   const [query, setQuery] = useState("");

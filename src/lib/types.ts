@@ -1,25 +1,16 @@
 export type Locale = "ar" | "en" | "he";
 export type Localized = Record<Locale, string>;
-export type Specialty =
-  | "family"
-  | "cardiology"
-  | "dermatology"
-  | "orthopedics"
-  | "neurology"
-  | "pediatrics"
-  | "gynecology"
-  | "psychiatry"
-  | "ent"
-  | "physiotherapy";
+export type Specialty = string;
 export type ConsultationType = "clinic" | "video";
 export interface Doctor {
   id: string;
+  record: import("./api/doctors").DoctorRecord;
   name: Localized;
   initials: string;
   specialty: Specialty;
   city: Localized;
   cityId: string;
-  languages: Locale[];
+  languages: string[];
   experience: number;
   portrait?: string;
   consultations: ConsultationType[];

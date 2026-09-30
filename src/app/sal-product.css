@@ -1,0 +1,1277 @@
+/* SAL is the product's entry point. Scoped rules preserve the other workspaces. */
+.sal-product-opening,
+.sal-product-page {
+  background: #f4f4ef;
+  padding-block: 30px 22px;
+}
+.sal-experience {
+  display: grid;
+  grid-template-columns: minmax(290px, 0.84fr) minmax(0, 1.4fr);
+  background: #fff;
+  border: 1px solid #d8dfdf;
+  border-radius: 8px;
+}
+.sal-identity {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px;
+  background: linear-gradient(180deg, #eef4f4 0%, #eaf0f2 46%);
+  border-start-start-radius: 8px;
+}
+.sal-identity-top {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+.sal-identity .section-kicker {
+  font-size: 11px;
+  letter-spacing: 0.7px;
+}
+.sal-identity-index {
+  font-size: 11px;
+  color: #526b7d;
+  white-space: nowrap;
+  direction: ltr;
+}
+.sal-character-heading {
+  margin-block: 20px 16px;
+}
+/* The official 3D character: motion and light express SAL's state, the art
+   itself is never altered. */
+.sal-character {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+}
+.sal-character-stage {
+  position: relative;
+  width: 228px;
+  aspect-ratio: 1;
+  isolation: isolate;
+  animation: sal-arrival 700ms cubic-bezier(0.22, 0.8, 0.3, 1) both;
+}
+.sal-character-aura {
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 44%,
+    #dff4f1 0%,
+    #cfeaf3 45%,
+    #eaf0f2 72%,
+    transparent 78%
+  );
+  filter: blur(1px);
+  opacity: 0.9;
+  transition: opacity 400ms ease, transform 400ms ease;
+  animation: sal-breathe 5.5s ease-in-out infinite;
+}
+.sal-character-ring {
+  position: absolute;
+  inset: 1.5%;
+  border-radius: 50%;
+  border: 1px solid #b9d9d4;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.sal-character-ring::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  inset-inline-start: calc(50% - 3.5px);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #177467;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.sal-character-art {
+  position: absolute;
+  inset: 9%;
+  display: grid;
+  place-items: center;
+  transition: transform 260ms cubic-bezier(0.22, 0.8, 0.3, 1);
+  animation: sal-float 6s ease-in-out infinite;
+  z-index: 1;
+}
+.sal-character-art img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 18px #17344d1a);
+}
+.sal-character-stage::after {
+  content: "";
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
+  width: 56%;
+  height: 7%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #17344d1c 0%, transparent 70%);
+  animation: sal-shadow 6s ease-in-out infinite;
+  z-index: 0;
+}
+.sal-character.is-compact .sal-character-stage {
+  width: 84px;
+}
+.sal-character.is-compact .sal-character-stage::after {
+  display: none;
+}
+/* Listening: SAL leans toward the conversation. */
+.sal-character[data-state="listening"] .sal-character-art {
+  transform: translateY(-4px) scale(1.025);
+}
+.sal-character[data-state="listening"] .sal-character-aura {
+  opacity: 1;
+  transform: scale(1.03);
+}
+/* Thinking: the aura pulses while a ring orbits SAL. */
+.sal-character[data-state="thinking"] .sal-character-aura {
+  animation: sal-breathe 2.1s ease-in-out infinite;
+  opacity: 1;
+}
+.sal-character[data-state="thinking"] .sal-character-ring {
+  opacity: 0.85;
+  animation: sal-orbit-spin 2.6s linear infinite;
+}
+.sal-character[data-state="thinking"] .sal-character-ring::after {
+  opacity: 1;
+}
+.sal-character[data-state="thinking"] .sal-character-art {
+  animation-duration: 3.4s;
+}
+/* Responding: a calm accent settles around SAL. */
+.sal-character[data-state="responding"] .sal-character-ring {
+  opacity: 1;
+  border-color: #9cc3ee;
+}
+.sal-character[data-state="responding"] .sal-character-aura {
+  background: radial-gradient(
+    circle at 50% 44%,
+    #e2effb 0%,
+    #d3e6f5 45%,
+    #eaf0f2 72%,
+    transparent 78%
+  );
+}
+.sal-character-status {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #375666;
+  font-size: 13px;
+  font-weight: 600;
+}
+.sal-character-status > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16776b;
+  flex-shrink: 0;
+}
+.sal-character[data-state="thinking"] .sal-character-status > span {
+  animation: sal-consider 1.4s ease-in-out infinite;
+}
+.sal-character[data-state="responding"] .sal-character-status > span {
+  background: var(--blue);
+}
+@keyframes sal-arrival {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sal-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+@keyframes sal-shadow {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleX(0.82);
+    opacity: 0.7;
+  }
+}
+@keyframes sal-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.045);
+    opacity: 1;
+  }
+}
+@keyframes sal-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.sal-identity h1 {
+  margin-top: 20px;
+  font-size: clamp(30px, 2.7vw, 42px);
+  line-height: 1.5;
+  font-weight: 760;
+  letter-spacing: -1px;
+}
+.sal-identity h1 > span {
+  display: block;
+  color: #145dc5;
+}
+.sal-purpose {
+  font-size: 17px;
+  line-height: 1.9;
+  color: #3d5569;
+  max-width: 37ch;
+}
+.sal-identity-foot {
+  margin-top: auto;
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+.sal-care-line {
+  width: 28px;
+  height: 2px;
+  background: #187368;
+  flex-shrink: 0;
+}
+.sal-identity-foot p {
+  font-size: 13px;
+  font-weight: 560;
+  color: #375666;
+}
+.sal-desk {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 32px 20px;
+}
+.sal-desk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 17px;
+  border-bottom: 1px solid #e1e6e7;
+}
+.sal-desk-header > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sal-desk-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #546777;
+}
+.sal-desk-status {
+  font-size: 14px;
+  color: #385a60;
+}
+.sal-desk-signature {
+  font-size: 25px;
+  font-weight: 760;
+  letter-spacing: -1.2px;
+  direction: ltr;
+}
+.sal-new-conversation {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 9px;
+  font-size: 14px;
+  background: #fff;
+  color: var(--navy);
+  min-height: 44px;
+}
+.sal-transcript {
+  min-height: 190px;
+  max-height: 330px;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+  padding-block: 25px 20px;
+}
+.sal-welcome > span {
+  font-size: 16px;
+  color: #246c66;
+  font-weight: 650;
+}
+.sal-welcome h2 {
+  font-size: clamp(28px, 2.6vw, 37px);
+  line-height: 1.45;
+  font-weight: 720;
+  margin-block: 9px 15px;
+  white-space: pre-line;
+}
+.sal-welcome > p {
+  max-width: 48ch;
+  font-size: 17px;
+  color: #4c6173;
+  line-height: 1.9;
+}
+.sal-entry {
+  padding: 18px 0;
+  border-bottom: 1px solid #e4e9ed;
+}
+.sal-entry:first-child {
+  padding-top: 0;
+}
+.sal-entry-speaker {
+  font-size: 12px;
+  font-weight: 750;
+  color: #376e69;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 7px;
+}
+.sal-entry p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.95;
+  color: #173349;
+}
+.sal-entry-user {
+  border-inline-start: 2px solid #becbd4;
+  padding-inline-start: 16px;
+  margin-block: 0 16px;
+  border-bottom: 0;
+}
+.sal-entry-user .sal-entry-speaker {
+  color: #61758a;
+}
+.sal-entry-user p {
+  color: #58697b;
+  font-size: 17px;
+}
+.sal-thinking {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-block: 20px;
+}
+.sal-thinking b {
+  font-size: 17px;
+  color: #1f4b57;
+}
+.sal-thinking p {
+  font-size: 14px;
+  margin-top: 2px;
+}
+.sal-thinking-bars {
+  display: flex;
+  gap: 4px;
+  height: 23px;
+  align-items: center;
+}
+.sal-thinking-bars i {
+  width: 3px;
+  height: 10px;
+  background: #177467;
+  animation: sal-consider 1.4s ease-in-out infinite;
+}
+.sal-thinking-bars i:nth-child(2) {
+  height: 21px;
+  animation-delay: 0.2s;
+}
+.sal-thinking-bars i:nth-child(3) {
+  height: 15px;
+  animation-delay: 0.4s;
+}
+@keyframes sal-consider {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.sal-input-area {
+  padding-top: 9px;
+}
+.sal-starters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.sal-starters > button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 37px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #d4dee4;
+  background: #f6f8f9;
+  padding: 7px 10px;
+  border-radius: 4px;
+  color: #38526a;
+}
+.sal-starters > button:hover {
+  border-color: #688a9e;
+  background: #edf3f7;
+}
+.sal-starters > button > span {
+  color: #6a8a96;
+  font-size: 15px;
+}
+.sal-writing-desk {
+  border: 1px solid #8ca5b8;
+  border-radius: 5px;
+  background: #fff;
+  padding: 15px 17px;
+  box-shadow: 0 2px 4px #17344d04;
+}
+.sal-writing-desk:focus-within {
+  border-color: #126a8c;
+  box-shadow: 0 0 0 2px #126a8c12;
+}
+.sal-writing-desk > label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #294b62;
+  margin: 0;
+}
+.sal-writing-desk textarea {
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 10px 0 7px;
+  min-height: 80px;
+  width: 100%;
+  resize: vertical;
+  max-height: 180px;
+  font-size: 17px;
+  line-height: 1.75;
+  background: #fff;
+  color: var(--navy);
+  outline: none;
+}
+.sal-writing-desk textarea:focus-visible {
+  outline: none;
+}
+.sal-writing-desk textarea::placeholder {
+  color: #687a8a;
+}
+.sal-input-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #edf0f3;
+  padding-top: 12px;
+}
+.sal-input-actions > span {
+  font-size: 11px;
+  color: #6b7b87;
+}
+.sal-input-actions .sal-send {
+  font-size: 16px;
+  font-weight: 700;
+  min-height: 48px;
+  padding: 10px 17px;
+}
+.sal-desk-foot {
+  display: flex;
+  gap: 7px;
+  padding-top: 12px;
+  align-items: flex-start;
+}
+.sal-desk-foot svg {
+  margin-top: 4px;
+  color: #526d79;
+}
+.sal-desk-foot p {
+  font-size: 12px;
+  color: #5a6d79;
+  line-height: 1.75;
+}
+.sal-experience-boundary {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+  border-top: 1px solid #d9e2e5;
+  padding: 13px 25px;
+  background: #f8faf9;
+}
+.sal-experience-boundary p,
+.sal-experience-boundary a {
+  font-size: 12px;
+  color: #4c636f;
+}
+.sal-experience-boundary a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.sal-experience-boundary a:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
+.sal-request-error {
+  border-inline-start: 3px solid #aa663b;
+  background: #fff6ee;
+  padding: 12px 15px;
+  margin-top: 10px;
+}
+.sal-request-error p {
+  color: #804826;
+  font-size: 14px;
+}
+.sal-request-error a {
+  color: #784221;
+  text-decoration: underline;
+  font-size: 14px;
+}
+.sal-urgent {
+  padding: 18px;
+  background: #fff4ef;
+  border-inline-start: 3px solid #a74a2b;
+  margin-top: 16px;
+}
+.sal-urgent strong {
+  font-size: 18px;
+  color: #91371e;
+}
+.sal-urgent p {
+  margin-top: 7px;
+  color: #833d27;
+  font-size: 16px;
+}
+.sal-account-note {
+  padding-block: 30px;
+}
+.sal-account-note a {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: underline;
+}
+.sal-history-loading {
+  font-size: 17px;
+}
+.sal-sources {
+  padding-top: 18px;
+  font-size: 14px;
+}
+.sal-sources summary {
+  cursor: pointer;
+  color: #406766;
+  font-weight: 650;
+}
+.sal-results-jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-block: 8px 16px;
+  color: #125d78;
+  font-size: 15px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.sal-sources ul {
+  margin: 9px 0 0;
+  padding-inline-start: 24px;
+  color: #5b6d79;
+}
+.sal-recommendations {
+  grid-column: 1 / -1;
+  padding: 36px;
+  border-top: 1px solid var(--line);
+}
+.sal-recommendations-title {
+  margin-bottom: 26px;
+}
+.sal-recommendations-title h2 {
+  font-size: 30px;
+  margin-block: 8px 12px;
+}
+.sal-recommendations-title p {
+  max-width: 68ch;
+  font-size: 16px;
+}
+.sal-doctor-option {
+  display: flex;
+  gap: 20px;
+  border-top: 1px solid #cad6df;
+  padding: 24px 0;
+}
+.sal-option-number {
+  font-size: 15px;
+  color: #668091;
+  padding-top: 6px;
+  font-weight: 650;
+}
+.sal-option-body {
+  flex: 1;
+  min-width: 0;
+}
+.sal-option-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.sal-option-heading .avatar {
+  width: 52px;
+  height: 62px;
+}
+.sal-option-heading h3 {
+  font-size: 23px;
+}
+.sal-option-heading p {
+  font-size: 16px;
+  color: #326f6c;
+}
+.sal-option-reason {
+  margin-top: 17px;
+  font-size: 15px;
+  max-width: 78ch;
+}
+.sal-option-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 16px 0;
+  margin: 12px 0;
+  gap: 20px;
+}
+.sal-option-facts > div {
+  min-width: 0;
+}
+.sal-option-facts dt {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  color: #617a8c;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.sal-option-facts dd {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+.sal-option-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e4ebef;
+}
+.sal-option-availability {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 15px;
+  color: #29685e;
+}
+.sal-option-availability small {
+  display: block;
+  font-size: 11px;
+  color: #5b7180;
+}
+.sal-section-heading h2 {
+  font-size: 34px;
+  margin-block: 12px;
+}
+.sal-section-heading > p {
+  max-width: 65ch;
+}
+.sal-how {
+  padding-block: 55px;
+}
+.sal-how-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 35px;
+  list-style: none;
+  padding: 0;
+  margin: 32px 0 0;
+}
+.sal-how-steps li {
+  display: flex;
+  gap: 15px;
+}
+.sal-how-steps li > span {
+  font-size: 14px;
+  color: #2b776d;
+  font-weight: 700;
+  padding-top: 6px;
+}
+.sal-how-steps li h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+.sal-how-steps li p {
+  font-size: 16px;
+  line-height: 1.9;
+}
+.sal-choice-section {
+  background: #09283f;
+  color: #fff;
+}
+.sal-choice-guide {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 80px;
+  padding-block: 49px;
+  align-items: center;
+}
+.sal-choice-guide .section-kicker {
+  color: #a8cdc9;
+  font-size: 12px;
+}
+.sal-choice-guide h2 {
+  font-size: 34px;
+  white-space: pre-line;
+  line-height: 1.5;
+  margin-block: 14px 20px;
+}
+.sal-choice-guide > div > p {
+  color: #c1d1dd;
+  font-size: 16px;
+  line-height: 1.95;
+}
+.sal-choice-guide .text-link {
+  color: #e3f3ed;
+  display: inline-flex;
+  margin-top: 23px;
+  border-bottom: 1px solid #688b99;
+  padding-bottom: 6px;
+}
+.sal-guide-caption {
+  color: #a8c5cc;
+  font-size: 11px;
+  letter-spacing: 0.7px;
+  display: block;
+  padding-bottom: 13px;
+}
+.sal-recommendation-guide > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  border-top: 1px solid #355062;
+  padding: 18px 0;
+}
+.sal-recommendation-guide > div > svg {
+  color: #9bccbd;
+  margin-top: 4px;
+}
+.sal-recommendation-guide h3 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+.sal-recommendation-guide p {
+  color: #b9ccd7;
+  font-size: 14px;
+}
+.sal-recommendation-guide .sal-guide-note {
+  font-size: 12px;
+  padding-top: 10px;
+  color: #9fbbc9;
+}
+.sal-manual-search {
+  padding-block: 55px 32px;
+}
+.sal-manual-search .care-search {
+  margin-top: 27px;
+}
+.sal-home-specialties {
+  padding-block: 24px 48px;
+}
+.sal-specialty-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-block: 25px;
+  border-top: 1px solid #cfd9e1;
+}
+.sal-specialty-links > a {
+  padding: 20px 13px;
+  border-bottom: 1px solid #dce4e8;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+}
+.sal-specialty-links > a svg {
+  color: #628394;
+}
+.sal-specialty-links > a:hover {
+  background: #f0f5f6;
+  color: #125a78;
+}
+.sal-home-online {
+  padding-bottom: 35px;
+}
+.sal-home-information {
+  display: grid;
+  grid-template-columns: 0.8fr 1.3fr;
+  gap: 65px;
+  padding-block: 36px;
+  border-top: 1px solid var(--line);
+}
+.sal-home-information h2 {
+  font-size: 32px;
+  margin-top: 13px;
+}
+.desktop-nav .sal-nav-entry {
+  color: #145dc5;
+  font-weight: 750;
+}
+.mobile-nav .sal-nav-entry {
+  color: var(--blue);
+  background: #eff5fc;
+  border-radius: 6px;
+}
+
+@media (max-width: 1100px) {
+  .sal-experience {
+    grid-template-columns: minmax(250px, 0.85fr) minmax(0, 1.4fr);
+  }
+  .sal-identity,
+  .sal-desk {
+    padding-inline: 23px;
+  }
+  .sal-character-stage {
+    width: 196px;
+  }
+  .sal-identity-index {
+    display: none;
+  }
+  .sal-choice-guide {
+    gap: 40px;
+  }
+  .sal-starters {
+    gap: 6px;
+  }
+  .sal-starters > button {
+    font-size: 11px;
+    gap: 6px;
+    padding-inline: 8px;
+  }
+  .sal-starters > button > span {
+    display: none;
+  }
+  .sal-input-actions > span {
+    display: none;
+  }
+  .sal-input-actions {
+    justify-content: flex-end;
+  }
+}
+@media (max-width: 760px) {
+  .sal-product-opening,
+  .sal-product-page {
+    padding-block: 15px 20px;
+  }
+  .sal-experience {
+    display: flex;
+    flex-direction: column;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .sal-identity {
+    padding: 0 0 15px;
+    background: transparent;
+  }
+  .sal-identity-top,
+  .sal-identity-foot {
+    display: none;
+  }
+  .sal-character-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin: 0;
+  }
+  .sal-character {
+    flex-shrink: 0;
+  }
+  .sal-character-stage {
+    width: 104px;
+  }
+  .sal-character-status {
+    display: none;
+  }
+  .sal-identity h1 {
+    margin: 0;
+    font-size: clamp(21px, 5.8vw, 28px);
+    letter-spacing: -0.5px;
+    line-height: 1.6;
+  }
+  .sal-purpose {
+    font-size: 14px;
+    line-height: 1.85;
+    max-width: none;
+    margin-top: 8px;
+  }
+  .sal-desk {
+    background: #fff;
+    border: 1px solid #cfdade;
+    border-radius: 6px;
+    padding: 14px;
+  }
+  .sal-desk-header {
+    padding-bottom: 11px;
+    gap: 10px;
+  }
+  .sal-desk-label {
+    font-size: 10px;
+  }
+  .sal-desk-status {
+    font-size: 12px;
+  }
+  .sal-desk-signature {
+    font-size: 23px;
+  }
+  .sal-transcript {
+    min-height: 0;
+    max-height: 280px;
+    padding-block: 15px 8px;
+  }
+  .sal-welcome > span {
+    font-size: 13px;
+  }
+  .sal-welcome h2 {
+    font-size: 24px;
+    line-height: 1.5;
+    margin-block: 5px 3px;
+    white-space: normal;
+  }
+  .sal-welcome > p {
+    display: none;
+  }
+  .sal-starters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 3px;
+    margin-bottom: 8px;
+    scrollbar-width: none;
+  }
+  .sal-starters > button {
+    white-space: nowrap;
+    font-size: 11px;
+    min-height: 34px;
+    padding: 5px 8px;
+  }
+  .sal-input-area {
+    padding-top: 10px;
+  }
+  .sal-writing-desk {
+    padding: 10px 11px;
+  }
+  .sal-writing-desk > label {
+    font-size: 13px;
+  }
+  .sal-writing-desk textarea {
+    font-size: 16px;
+    min-height: 68px;
+    padding: 7px 0;
+    line-height: 1.65;
+  }
+  .sal-input-actions {
+    padding-top: 8px;
+  }
+  .sal-input-actions .sal-send {
+    min-height: 45px;
+    padding-block: 8px;
+    font-size: 15px;
+    width: 100%;
+  }
+  .sal-desk-foot {
+    padding-top: 10px;
+  }
+  .sal-desk-foot p {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  .sal-desk-foot svg {
+    width: 14px;
+    height: 14px;
+  }
+  .sal-experience-boundary {
+    background: transparent;
+    border: 0;
+    padding: 12px 2px 0;
+    align-items: flex-start;
+  }
+  .sal-experience-boundary p {
+    font-size: 11px;
+    line-height: 1.85;
+  }
+  .sal-experience-boundary > a {
+    display: none;
+  }
+  .sal-entry p {
+    font-size: 18px;
+    line-height: 1.95;
+  }
+  .sal-entry-user p {
+    font-size: 16px;
+  }
+  .sal-entry-speaker {
+    font-size: 11px;
+  }
+  .sal-desk.has-conversation .sal-transcript {
+    max-height: 310px;
+  }
+  .sal-request-error p,
+  .sal-request-error a {
+    font-size: 13px;
+  }
+  .sal-recommendations {
+    margin-top: 20px;
+    padding: 22px 0 0;
+  }
+  .sal-recommendations-title h2 {
+    font-size: 25px;
+  }
+  .sal-recommendations-title p {
+    font-size: 15px;
+  }
+  .sal-doctor-option {
+    gap: 9px;
+    padding-block: 22px;
+  }
+  .sal-option-number {
+    font-size: 12px;
+  }
+  .sal-option-heading {
+    gap: 12px;
+  }
+  .sal-option-heading h3 {
+    font-size: 21px;
+  }
+  .sal-option-heading .avatar {
+    width: 44px;
+    height: 54px;
+  }
+  .sal-option-heading p {
+    font-size: 14px;
+  }
+  .sal-option-reason {
+    font-size: 13px;
+  }
+  .sal-option-facts {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .sal-option-facts > div {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 12px;
+  }
+  .sal-option-facts dt {
+    margin: 0;
+  }
+  .sal-option-facts dd {
+    font-size: 14px;
+  }
+  .sal-option-footer {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .sal-option-availability {
+    font-size: 14px;
+  }
+  .sal-how {
+    padding-block: 31px;
+  }
+  .sal-section-heading h2 {
+    font-size: 26px;
+    margin-block: 10px;
+    line-height: 1.6;
+  }
+  .sal-how-steps {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin-top: 23px;
+  }
+  .sal-how-steps li {
+    gap: 14px;
+  }
+  .sal-how-steps li h3 {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+  .sal-how-steps li p {
+    font-size: 15px;
+  }
+  .sal-choice-guide {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-block: 31px;
+  }
+  .sal-choice-guide h2 {
+    font-size: 28px;
+    line-height: 1.55;
+    margin-block: 12px;
+  }
+  .sal-choice-guide > div > p {
+    font-size: 15px;
+  }
+  .sal-recommendation-guide h3 {
+    font-size: 19px;
+  }
+  .sal-manual-search {
+    padding-block: 32px 22px;
+  }
+  .sal-manual-search .care-search {
+    margin-top: 20px;
+  }
+  .sal-home-specialties {
+    padding-block: 14px 30px;
+  }
+  .sal-specialty-links {
+    grid-template-columns: 1fr 1fr;
+    margin-block: 20px;
+  }
+  .sal-specialty-links > a {
+    font-size: 15px;
+    padding: 16px 7px;
+    gap: 6px;
+  }
+  .sal-specialty-links > a svg {
+    width: 15px;
+  }
+  .sal-home-information {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-block: 26px;
+  }
+  .sal-home-information h2 {
+    font-size: 26px;
+  }
+  .sal-home-online {
+    padding-bottom: 25px;
+  }
+  .sal-new-conversation {
+    font-size: 12px;
+  }
+}
+@media (max-width: 380px) {
+  .sal-character-stage {
+    width: 88px;
+  }
+  .sal-character-heading {
+    gap: 8px;
+  }
+  .sal-identity h1 {
+    font-size: 21px;
+  }
+  .sal-desk {
+    padding: 12px;
+  }
+  .sal-welcome h2 {
+    font-size: 22px;
+  }
+}
+@media (max-width: 760px) and (max-height: 740px) {
+  .sal-product-opening,
+  .sal-product-page {
+    padding-top: 10px;
+  }
+  .sal-character-stage {
+    width: 78px;
+  }
+  .sal-identity h1 {
+    font-size: 21px;
+    line-height: 1.3;
+  }
+  .sal-identity {
+    padding-bottom: 10px;
+  }
+  .sal-purpose {
+    display: none;
+  }
+  .sal-desk-header {
+    padding-bottom: 7px;
+  }
+  .sal-desk-label {
+    display: none;
+  }
+  .sal-transcript {
+    padding-block: 10px 4px;
+  }
+  .sal-welcome h2 {
+    font-size: 20px;
+  }
+  .sal-welcome > span {
+    font-size: 11px;
+  }
+  .sal-starters {
+    display: none;
+  }
+  .sal-writing-desk textarea {
+    min-height: 55px;
+    height: 55px;
+  }
+  .sal-input-actions .sal-send {
+    min-height: 42px;
+  }
+  .sal-desk-foot {
+    padding-top: 8px;
+  }
+  .sal-desk-foot p {
+    font-size: 10px;
+  }
+  .sal-desk.has-conversation .sal-transcript {
+    max-height: 220px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sal-thinking-bars i,
+  .sal-character[data-state="thinking"] .sal-character-status > span {
+    animation: none;
+  }
+  .sal-character-art,
+  .sal-character-aura,
+  .sal-character-ring,
+  .sal-character-stage,
+  .sal-character-stage::after {
+    animation: none;
+    transition: none;
+    transform: none !important;
+  }
+}

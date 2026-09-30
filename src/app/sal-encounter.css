@@ -1,0 +1,544 @@
+/* SAL encounter: one centered stage, shared across homepage and conversations. */
+.sal-product-opening,
+.sal-product-page {
+  background: #f7f9fb;
+  padding: 22px 0 28px;
+}
+.sal-experience {
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  max-width: 1060px;
+  margin: auto;
+}
+.sal-session-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.sal-session-eyebrow {
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 2px;
+  color: #60768a;
+  margin: 0 0 5px;
+}
+.sal-session-stage .sal-character {
+  align-items: center;
+  gap: 3px;
+}
+.sal-session-stage .sal-character-stage {
+  width: 300px;
+  aspect-ratio: 1;
+  margin: 0;
+  isolation: isolate;
+}
+.sal-character-stage .sal-character-art {
+  width: 100%;
+  height: 100%;
+  animation: none;
+}
+.sal-character-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.sal-character-stage .sal-character-aura,
+.sal-character-stage .sal-character-ring,
+.sal-character-stage::after {
+  display: none;
+}
+.sal-character-art {
+  transition:
+    transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 500ms;
+  filter: drop-shadow(0 14px 14px #0b4b7014);
+}
+.sal-character[data-state="listening"] .sal-character-art {
+  transform: translateY(-5px) rotate(-2deg);
+}
+.sal-character[data-state="thinking"] .sal-character-art {
+  animation: sal-attentive 2.6s ease-in-out infinite;
+}
+.sal-character[data-state="recommendation"] .sal-character-art {
+  transform: translateY(-3px) rotate(2deg);
+}
+@keyframes sal-attentive {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+.sal-session-stage .sal-character-status {
+  font-size: 11px;
+  color: #387180;
+  font-weight: 550;
+}
+.sal-session-stage h1 {
+  margin: 10px 0 2px;
+  font-size: clamp(30px, 3vw, 42px);
+  font-weight: 750;
+  line-height: 1.35;
+  letter-spacing: -1.2px;
+}
+.sal-session-stage > p {
+  margin: 4px auto 17px;
+  max-width: 580px;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #41586c;
+}
+.sal-desk {
+  padding: 0;
+  width: min(100%, 690px);
+  margin: auto;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.sal-desk:not(.has-conversation) .sal-desk-header,
+.sal-desk:not(.has-conversation) .sal-transcript:empty {
+  display: none;
+}
+.sal-desk .sal-desk-header {
+  padding: 8px 0;
+}
+.sal-desk .sal-desk-label,
+.sal-desk .sal-desk-signature {
+  display: none;
+}
+.sal-desk .sal-desk-status {
+  font-size: 12px;
+}
+.sal-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.sal-starters {
+  order: 2;
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin: 0;
+}
+.sal-starters button {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #50697d;
+  min-height: 30px;
+}
+.sal-starters button:hover {
+  color: #125bd3;
+  background: #e9f0f8;
+}
+.sal-writing-desk {
+  background: white;
+  border: 1px solid #c5d3df;
+  padding: 13px 16px 11px;
+  border-radius: 18px;
+  box-shadow: 0 8px 35px #0c38690a;
+}
+.sal-writing-desk:focus-within {
+  border-color: #277ad1;
+  box-shadow: 0 0 0 3px #2169bd0d;
+}
+.sal-writing-desk label {
+  font-size: 12px;
+  font-weight: 650;
+  color: #3f5970;
+}
+.sal-writing-desk textarea {
+  height: 55px;
+  min-height: 55px;
+  font-size: 17px;
+  line-height: 1.5;
+  padding: 7px 0;
+  background: transparent;
+}
+.sal-input-actions {
+  border: 0;
+  padding-top: 4px;
+}
+.sal-input-actions > span {
+  font-size: 10px;
+}
+.sal-input-actions .sal-send {
+  min-height: 42px;
+  border-radius: 10px;
+  padding: 9px 20px;
+  font-size: 14px;
+}
+.sal-send:disabled {
+  opacity: 1;
+  color: #56728f;
+  background: #e7edf4;
+  cursor: default;
+}
+.sal-desk-foot {
+  justify-content: center;
+  padding-top: 8px;
+  gap: 6px;
+}
+.sal-desk-foot p {
+  font-size: 10px;
+  line-height: 1.6;
+  max-width: 540px;
+}
+.sal-experience-boundary {
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  border: 0;
+  background: transparent;
+  padding: 12px 0 0;
+}
+.sal-experience-boundary p,
+.sal-experience-boundary a {
+  font-size: 10px;
+  color: #62768b;
+}
+.sal-session-stage.is-active .sal-character-stage {
+  width: 135px;
+}
+.sal-session-stage.is-active h1 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+.sal-desk.has-conversation .sal-transcript {
+  max-height: 360px;
+  min-height: 100px;
+  padding: 14px 0;
+}
+.sal-entry-assistant {
+  font-size: 19px;
+}
+.sal-recommendations {
+  width: 100%;
+  border-top: 1px solid #cedae4;
+  padding: 28px 0 0;
+  margin-top: 28px;
+  background: transparent;
+}
+.sal-results-jump {
+  margin-block: 10px 16px;
+}
+.header-auth {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.header-auth .button {
+  font-size: 12px;
+  min-height: 36px;
+  padding: 8px 12px;
+}
+.mobile-auth-strip {
+  display: none;
+}
+.auth-page.auth-encounter,
+.auth-page.auth-confirm,
+.booking-auth-gate {
+  max-width: 490px;
+  padding-block: 28px 50px;
+}
+.auth-page .sal-character {
+  align-items: center;
+}
+.auth-page .sal-character-stage {
+  width: 110px;
+}
+.auth-page .page-heading {
+  text-align: center;
+  margin-bottom: 22px;
+}
+.auth-page .page-heading h1 {
+  font-size: 32px;
+}
+.auth-page .page-heading p {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.auth-mode-switch {
+  display: flex;
+  border-bottom: 1px solid #d7e1e9;
+  margin-bottom: 20px;
+}
+.auth-mode-switch button {
+  flex: 1;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: #566d83;
+  font-size: 14px;
+  cursor: pointer;
+}
+.auth-mode-switch button[aria-selected="true"] {
+  box-shadow: 0 2px #1565d8;
+  color: #0959c8;
+  font-weight: 700;
+}
+.google-auth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  border: 1px solid #c5d0dc;
+  border-radius: 8px;
+  min-height: 46px;
+  background: white;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.google-auth-button > span {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  color: #4285f4;
+}
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  margin: 20px 0;
+  color: #6b7f92;
+  font-size: 12px;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #dfe5ec;
+}
+.auth-encounter .live-form {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+.auth-encounter .live-form input {
+  min-height: 47px;
+  background: white;
+}
+.auth-notice {
+  background: #edf8f6;
+  border-inline-start: 3px solid #279681;
+  padding: 12px;
+  font-size: 14px;
+}
+.auth-guest-link {
+  display: block;
+  text-align: center;
+  margin-top: 22px;
+  font-size: 14px;
+  color: #145caf;
+}
+.auth-gate-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  justify-content: center;
+}
+.auth-confirm,
+.booking-auth-gate {
+  text-align: center;
+}
+.auth-confirm h1 {
+  font-size: 28px;
+  margin: 20px 0 12px;
+}
+.auth-confirm p {
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+@media (min-width: 761px) and (max-height: 780px) {
+  .sal-product-opening,
+  .sal-product-page {
+    padding-top: 12px;
+  }
+  .sal-session-stage .sal-character-stage {
+    width: 215px;
+  }
+  .sal-session-stage h1 {
+    font-size: 34px;
+  }
+  .sal-session-stage > p {
+    margin-bottom: 12px;
+    font-size: 17px;
+  }
+}
+@media (max-width: 1100px) {
+  .header-auth {
+    gap: 9px;
+  }
+  .desktop-nav {
+    gap: 16px;
+  }
+}
+@media (max-width: 900px) {
+  .header-auth {
+    display: none;
+  }
+  .mobile-auth-strip {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    padding: 6px 22px;
+    border-top: 1px solid #edf1f5;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0e60ce;
+  }
+}
+@media (max-width: 760px) {
+  .sal-product-opening,
+  .sal-product-page {
+    padding: 12px 0 23px;
+  }
+  .sal-session-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+  .sal-session-stage .sal-character-stage {
+    width: 205px;
+  }
+  .sal-session-stage h1 {
+    font-size: 29px;
+    margin-top: 8px;
+  }
+  .sal-session-stage > p {
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 5px auto 17px;
+    max-width: 320px;
+  }
+  .sal-writing-desk {
+    padding: 12px;
+    border-radius: 15px;
+  }
+  .sal-writing-desk textarea {
+    height: 61px;
+    min-height: 61px;
+    font-size: 16px;
+  }
+  .sal-input-actions {
+    align-items: center;
+    gap: 8px;
+  }
+  .sal-input-actions > span {
+    display: none;
+  }
+  .sal-input-actions .sal-send {
+    width: 100%;
+    min-height: 43px;
+  }
+  .sal-starters {
+    display: none;
+  }
+  .sal-desk-foot p {
+    font-size: 10px;
+  }
+  .sal-experience-boundary {
+    padding-top: 10px;
+  }
+  .sal-session-stage.is-active .sal-character-stage {
+    width: 100px;
+  }
+  .sal-session-stage.is-active h1 {
+    font-size: 23px;
+  }
+  .sal-desk.has-conversation .sal-transcript {
+    max-height: 300px;
+  }
+  .sal-recommendations {
+    padding-top: 22px;
+  }
+  .auth-page.auth-encounter {
+    padding-top: 18px;
+  }
+  .auth-page .page-heading h1 {
+    font-size: 28px;
+  }
+}
+@media (max-width: 760px) and (max-height: 680px) {
+  .sal-product-opening,
+  .sal-product-page {
+    padding-top: 5px;
+  }
+  .sal-session-eyebrow {
+    display: none;
+  }
+  .sal-session-stage .sal-character-stage {
+    width: 125px;
+  }
+  .sal-session-stage .sal-character-status {
+    font-size: 9px;
+  }
+  .sal-session-stage h1 {
+    font-size: 24px;
+    margin-top: 4px;
+  }
+  .sal-session-stage > p {
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 4px auto 9px;
+    max-width: 280px;
+  }
+  .sal-writing-desk {
+    padding: 9px 11px;
+  }
+  .sal-writing-desk textarea {
+    min-height: 43px;
+    height: 43px;
+    font-size: 15px;
+    padding: 5px 0;
+  }
+  .sal-input-actions .sal-send {
+    min-height: 39px;
+    padding: 7px 15px;
+  }
+  .sal-desk-foot {
+    padding-top: 7px;
+  }
+  .sal-desk-foot p {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sal-character-art {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+.sal-character-stage .sal-character-art {
+  position: relative;
+  inset: auto;
+  margin: 0;
+}
+.sal-character-stage {
+  display: grid;
+  place-items: center;
+}
+.auth-encounter .live-form { display:grid; gap:16px; }
+.auth-encounter .live-form > label { margin:0; }
+.auth-encounter .live-form > .button { width:100%; justify-content:center; }
+.auth-encounter .live-form > .text-link { justify-content:center; justify-self:center; }
+.auth-encounter .page-heading .eyebrow { display:block; text-align:center; }

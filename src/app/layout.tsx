@@ -3,10 +3,16 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/noto-sans-arabic";
 import "@fontsource-variable/heebo";
 import "./globals.css";
+import "./sal-product.css";
+import "./sal-encounter.css";
+import "./sal-consultation.css";
+import { AuthModalProvider } from "@/components/auth-modal";
 import { Provider } from "@/components/provider";
 import { Shell } from "@/components/shell";
+import { SALSessionProvider } from "@/components/sal/sal-session";
 import { cookies } from "next/headers";
 export const metadata: Metadata = {
+  referrer: "no-referrer",
   title: {
     default: "The Clinic — رعاية تبدأ بفهمك",
     template: "%s | The Clinic",
@@ -27,7 +33,9 @@ export default async function RootLayout({
     <html lang={locale} dir={locale === "en" ? "ltr" : "rtl"}>
       <body>
         <Provider initialLocale={locale}>
-          <Shell>{children}</Shell>
+          <SALSessionProvider>
+            <AuthModalProvider><Shell>{children}</Shell></AuthModalProvider>
+          </SALSessionProvider>
         </Provider>
       </body>
     </html>

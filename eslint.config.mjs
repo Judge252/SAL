@@ -5,6 +5,8 @@ export default defineConfig([
   ...nextVitals,
   ...nextTs,
   globalIgnores([
+    "backend/venv/**",
+    "backend/.venv/**",
     "work/**",
     ".next/**",
     "test-results/**",

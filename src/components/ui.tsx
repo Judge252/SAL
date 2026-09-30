@@ -4,17 +4,15 @@ import Link from "next/link";
 import {
   ArrowUpLeft,
   ArrowUpRight,
-  Bookmark,
   MapPin,
   ArrowLeft,
   ArrowRight,
-  Video,
   Languages,
   UserRound,
 } from "lucide-react";
 import { useClinic } from "./provider";
 import type { Doctor, ConsultationType } from "@/lib/types";
-import { specialties, languageNames } from "@/lib/data";
+import { languageNames } from "@/lib/data";
 import type { ReactNode, KeyboardEvent } from "react";
 export function handleTabNavigation(event: KeyboardEvent<HTMLDivElement>) {
   if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -74,17 +72,17 @@ export function PageHeading({
   description,
   children,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
-  description: string;
+  description?: string;
   children?: ReactNode;
 }) {
   return (
     <div className="page-heading">
       <div>
-        <Eyebrow>{eyebrow}</Eyebrow>
+        {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
         <h1>{title}</h1>
-        <p>{description}</p>
+        {description ? <p>{description}</p> : null}
       </div>
       {children}
     </div>
@@ -120,101 +118,8 @@ export function Avatar({
     </div>
   );
 }
-export function DoctorCard({
-  doctor: d,
-  mode = "clinic",
-}: {
-  doctor: Doctor;
-  mode?: ConsultationType;
-}) {
-  const { t, locale, saved, toggleSaved } = useClinic();
-  const consultation = d.consultations.includes(mode) ? mode : "clinic";
-  const href = `/booking/${d.id}?mode=${consultation}`;
-  return (
-    <article className="doctor-card">
-      <Avatar doctor={d} />
-      <div className="doctor-information">
-        <div className="doctor-card-heading">
-          <div>
-            <Link className="doctor-name" href={`/doctors/${d.id}`}>
-              {d.name[locale]}
-            </Link>
-            <p className="specialty">{specialties[d.specialty][locale]}</p>
-          </div>
-          <button
-            className={`icon-button ${saved.includes(d.id) ? "saved" : ""}`}
-            aria-label={t("حفظ الطبيب", "Save doctor", "שמירת רופא")}
-            aria-pressed={saved.includes(d.id)}
-            onClick={() => toggleSaved(d.id)}
-          >
-            <Bookmark size={21} />
-          </button>
-        </div>
-        <div className="doctor-meta">
-          <span>
-            <MapPin size={17} />
-            {d.city[locale]}
-          </span>
-          <span>
-            <Languages size={17} />
-            {d.languages.map((l) => languageNames[l]).join("، ")}
-          </span>
-        </div>
-        <div className="consultation-labels">
-          <span>
-            {t("زيارة في العيادة", "In-clinic visit", "ביקור במרפאה")}
-          </span>
-          {d.consultations.includes("video") && (
-            <span>
-              <Video size={16} />
-              {t("استشارة فيديو", "Video consultation", "ייעוץ וידאו")}
-            </span>
-          )}
-        </div>
-        <Link href={`/doctors/${d.id}`} className="profile-link">
-          {t("عرض الملف", "View profile", "לפרופיל הרופא")}
-          <Arrow diagonal />
-        </Link>
-      </div>
-      <div className="doctor-availability">
-        <span className="availability">
-          <i />
-          {d.nextDay === 1
-            ? t("متاح غدًا", "Available tomorrow", "זמין מחר")
-            : t(
-                `موعد خلال ${d.nextDay} أيام`,
-                `Available in ${d.nextDay} days`,
-                `זמין בעוד ${d.nextDay} ימים`,
-              )}
-        </span>
-        <div className="preview-slots">
-          {["09:00", "10:30"].map((time) => (
-            <Link
-              href={`${href}&time=${time}`}
-              key={time}
-              aria-label={`${t("احجز", "Book", "קביעה")} ${time}`}
-            >
-              {time}
-            </Link>
-          ))}
-        </div>
-        <Link href={href} className="button small">
-          {t("احجز موعدًا", "Book a visit", "קביעת תור")}
-          <Arrow />
-        </Link>
-      </div>
-    </article>
-  );
+export function DoctorCard({doctor:d,mode="clinic"}:{doctor:Doctor;mode?:ConsultationType}){
+ const {t,locale,specialties}=useClinic();const href=`/booking/${d.id}?mode=${mode}`;
+ return <article className="doctor-card"><Avatar doctor={d}/><div className="doctor-information"><div className="doctor-card-heading"><div><Link className="doctor-name" href={`/doctors/${d.id}`}>{d.name[locale]}</Link><p className="specialty">{specialties[d.specialty]?.[locale]||d.record.specialties?.name_en}</p></div></div><div className="doctor-meta"><span><MapPin size={17}/>{d.city[locale]}</span><span><Languages size={17}/>{d.languages.map(l=>languageNames[l]||l).join(' · ')}</span></div><div className="consultation-labels">{d.consultations.map(c=><span key={c}>{c==='video'?t('بالفيديو','Video','וידאו'):t('في العيادة','In clinic','במרפאה')}</span>)}</div><Link href={`/doctors/${d.id}`} className="profile-link">{t('عرض الملف','View profile','לפרופיל')}<Arrow diagonal/></Link></div><div className="doctor-availability"><Link href={href} className="button small">{t('عرض المواعيد','View available times','צפייה בזמינות')}<Arrow/></Link></div></article>;
 }
-export function DemoNote() {
-  const { t } = useClinic();
-  return (
-    <p className="demo-note">
-      {t(
-        "نسخة تجريبية: ملفات الأطباء والمواعيد للتوضيح فقط. لا تمثل أطباء موثّقين ولا تنشئ حجوزات حقيقية.",
-        "Prototype: doctor profiles and appointments are illustrative. They do not represent verified clinicians or create real bookings.",
-        "אב טיפוס: פרופילי הרופאים והתורים הם להמחשה. הם אינם מייצגים רופאים מאומתים או יוצרים הזמנות אמיתיות.",
-      )}
-    </p>
-  );
-}
+export function DemoNote(){return null;}
